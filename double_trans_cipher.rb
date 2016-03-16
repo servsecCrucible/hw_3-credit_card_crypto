@@ -10,9 +10,10 @@ module DoubleTranspositionCipher
     # 4. sort columns of each row in predictibly random way
     # 5. return joined cyphertext
     doc = document.to_s
-    len = (doc.size**0.5).to_i + 1
+    len = (doc.size**0.5).to_i
+    len += 1
     tab = table(len, key)
-    res = Array.new(len**2, '')
+    res = Array.new(len**2, ' ')
     doc.chars.each.with_index do |c, i|
       res[(len * tab[i / len]) + tab[i % len]] = c
     end
@@ -22,13 +23,13 @@ module DoubleTranspositionCipher
   def decrypt(ciphertext, key)
     # TODO: FILL THIS IN!
     doc = ciphertext.to_s
-    len = (doc.size**0.5).to_i + 1
+    len = (doc.size**0.5).to_i
     tab = table(len, key)
-    res = Array.new(len**2, '')
+    res = Array.new(len**2, ' ')
     doc.chars.each.with_index do |c, i|
       res[(len * tab.index(i / len)) + tab.index(i % len)] = c
     end
-    res.join
+    res.join.strip!
   end
 
   def table(length, key)
