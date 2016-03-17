@@ -13,47 +13,25 @@ cards.each do |key, card|
       @key = key.to_i
     end
 
-    describe 'Using Caesar cipher' do
-      it 'should encrypt card information' do
-        enc = SubstitutionCipher::Caesar.encrypt(@cc, @key)
-        enc.wont_equal @cc.to_s
-        enc.wont_be_nil
-      end
+    ciphers = [
+      ['Caesar cipher', SubstitutionCipher::Caesar],
+      ['Permutation cipher', SubstitutionCipher::Permutation],
+      ['Double transposition cipher', DoubleTranspositionCipher]
+    ]
 
-      it 'should decrypt text' do
-        enc = SubstitutionCipher::Caesar.encrypt(@cc, @key)
-        dec = SubstitutionCipher::Caesar.decrypt(enc, @key)
-        dec.must_equal @cc.to_s
-      end
-    end
+    ciphers.each do |_name, method|
+      describe 'Using #{name}' do
+        it 'should encrypt card information' do
+          enc = method.encrypt(@cc, @key)
+          enc.wont_equal @cc.to_s
+          enc.wont_be_nil
+        end
 
-    describe 'Using Permutation cipher' do
-      it 'should encrypt card information' do
-        enc = SubstitutionCipher::Permutation.encrypt(@cc, @key)
-        enc.wont_equal @cc.to_s
-        enc.wont_be_nil
-      end
-
-      it 'should decrypt text' do
-        enc = SubstitutionCipher::Permutation.encrypt(@cc, @key)
-        dec = SubstitutionCipher::Permutation.decrypt(enc, @key)
-        dec.must_equal @cc.to_s
-      end
-    end
-
-    # TODO: Add tests for double transposition and AES ciphers
-    #       Can you DRY out the tests using metaprogramming? (see lecture slide)
-    describe 'Double Transposition cipher' do
-      it 'should encrypt card information' do
-        enc = DoubleTranspositionCipher.encrypt(@cc, @key)
-        enc.wont_equal @cc.to_s
-        enc.wont_be_nil
-      end
-
-      it 'should decrypt text' do
-        enc = DoubleTranspositionCipher.encrypt(@cc, @key)
-        dec = DoubleTranspositionCipher.decrypt(enc, @key)
-        dec.must_equal @cc.to_s
+        it 'should decrypt text' do
+          enc = method.encrypt(@cc, @key)
+          dec = method.decrypt(enc, @key)
+          dec.must_equal @cc.to_s
+        end
       end
     end
   end
