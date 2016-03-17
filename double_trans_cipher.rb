@@ -37,9 +37,8 @@ module DoubleTranspositionCipher
     col_sorted_matrix = Array.new(col) { Array.new(col, 0) }
 
     row_sorted_matrix = row_swap(origin_matrix, row_sorted_matrix, random_key)
-    row_sorted_matrix = row_sorted_matrix.transpose
 
-    col_sorted_matrix = row_swap(row_sorted_matrix, col_sorted_matrix, random_key)
+    col_sorted_matrix = row_swap(row_sorted_matrix.transpose, col_sorted_matrix, random_key)
     col_sorted_matrix = col_sorted_matrix.transpose
     col_sorted_matrix.map(&:join).join
   end
@@ -51,9 +50,8 @@ module DoubleTranspositionCipher
     row_sorted_matrix = Array.new(col) { Array.new(col, 0) }
 
     col_sorted_matrix = undo_swap(cipher_matrix.transpose, col_sorted_matrix, random_key)
-    col_sorted_matrix = col_sorted_matrix.transpose
 
-    row_sorted_matrix = undo_swap(col_sorted_matrix, row_sorted_matrix, random_key)
+    row_sorted_matrix = undo_swap(col_sorted_matrix.transpose, row_sorted_matrix, random_key)
     row_sorted_matrix.map(&:join).join.rstrip
   end
 end
