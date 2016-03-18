@@ -15,7 +15,8 @@ module DoubleTranspositionCipher
 
     row_sorted_matrix = row_swap(origin_matrix, row_sorted_matrix, random_key)
 
-    col_sorted_matrix = row_swap(row_sorted_matrix.transpose, col_sorted_matrix, random_key)
+    col_sorted_matrix = row_swap(row_sorted_matrix.transpose, \
+                                 col_sorted_matrix, random_key)
     col_sorted_matrix = col_sorted_matrix.transpose
     col_sorted_matrix.map(&:join).join
   end
@@ -26,13 +27,13 @@ module DoubleTranspositionCipher
     col_sorted_matrix = Array.new(col) { Array.new(col, 0) }
     row_sorted_matrix = Array.new(col) { Array.new(col, 0) }
 
-    col_sorted_matrix = undo_swap(cipher_matrix.transpose, col_sorted_matrix, random_key)
+    col_sorted_matrix = undo_swap(cipher_matrix.transpose, \
+                                  col_sorted_matrix, random_key)
 
-    row_sorted_matrix = undo_swap(col_sorted_matrix.transpose, row_sorted_matrix, random_key)
+    row_sorted_matrix = undo_swap(col_sorted_matrix.transpose, \
+                                  row_sorted_matrix, random_key)
     row_sorted_matrix.map(&:join).join.rstrip
   end
-
-  private
 
   def self.row_swap(origin, dest, random_key)
     origin.each_with_index do |_row, i|
@@ -40,6 +41,7 @@ module DoubleTranspositionCipher
     end
     dest
   end
+  private_class_method :row_swap
 
   def self.undo_swap(origin, dest, random_key)
     origin.each_with_index do |_row, i|
@@ -47,6 +49,7 @@ module DoubleTranspositionCipher
     end
     dest
   end
+  private_class_method :undo_swap
 
   def self.init_matrix(string, key)
     string = string.to_s
@@ -55,8 +58,10 @@ module DoubleTranspositionCipher
     matrix = string.chars.each_slice(size).to_a
     [matrix, create_random_key(key, size), size]
   end
+  private_class_method :init_matrix
 
   def self.create_random_key(key, size)
     Array(0...size).shuffle(random: Random.new(key))
   end
+  private_class_method :create_random_key
 end
