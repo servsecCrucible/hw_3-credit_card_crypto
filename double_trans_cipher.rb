@@ -1,28 +1,5 @@
 ## DoubleTranspositionCipher
 module DoubleTranspositionCipher
-  def self.row_swap(origin, dest, random_key)
-    origin.each_with_index do |_row, i|
-      dest[random_key[i]] = origin[i]
-    end
-    dest
-  end
-
-  def self.undo_swap(origin, dest, random_key)
-    origin.each_with_index do |_row, i|
-      dest[random_key.index(i)] = origin[i]
-    end
-    dest
-  end
-
-  def self.init_matrix(string, key)
-    string = string.to_s
-    size = Math.sqrt(string.length).ceil
-    random_key = Array(0...size).shuffle(random: Random.new(key))
-    string += ' ' * ((size**2) - string.length)
-    matrix = string.chars.each_slice(size).to_a
-    [matrix, random_key, size]
-  end
-
   def self.encrypt(document, key)
     ## Suggested steps for double transposition cipher
     # 1. find number of rows/cols such that matrix is almost square
@@ -53,5 +30,33 @@ module DoubleTranspositionCipher
 
     row_sorted_matrix = undo_swap(col_sorted_matrix.transpose, row_sorted_matrix, random_key)
     row_sorted_matrix.map(&:join).join.rstrip
+  end
+
+  private
+
+  def self.row_swap(origin, dest, random_key)
+    origin.each_with_index do |_row, i|
+      dest[random_key[i]] = origin[i]
+    end
+    dest
+  end
+
+  def self.undo_swap(origin, dest, random_key)
+    origin.each_with_index do |_row, i|
+      dest[random_key.index(i)] = origin[i]
+    end
+    dest
+  end
+
+  def self.init_matrix(string, key)
+    string = string.to_s
+    size = Math.sqrt(string.length).ceil
+    string += ' ' * ((size**2) - string.length)
+    matrix = string.chars.each_slice(size).to_a
+    [matrix, create_random_key(key, size), size]
+  end
+
+  def self.create_random_key(key, size)
+    Array(0...size).shuffle(random: Random.new(key))
   end
 end
