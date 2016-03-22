@@ -1,41 +1,72 @@
 require_relative '../credit_card'
 require 'minitest/autorun'
+require 'yaml'
 
-# Feel free to replace the contents of cards with data from your own yaml file
-card_details = [
-  { number: '4916603231464963', expiration_date: 'Mar-30-2020', \
-    owner: 'Soumya Ray', credit_network: 'Visa' },
-  { number: '6011580789725897', expiration_date: 'Sep-30-2020', \
-    owner: 'Nick Danks', credit_network: 'Visa' },
-  { number: '5423661657234057', expiration_date: 'Feb-30-2020', \
-    owner: 'Lee Chen', credit_network: 'Mastercard' }
-]
+data = YAML.load_file 'spec/test_cypher.yml'
+card_details = []
 
-cards = card_details.map { |c| CreditCard.new(c[:number], \
-  c[:expiration_date], c[:owner], c[:credit_network]) }
+data.each do |_key, card|
+  card_details << CreditCard.new(card['number'], card['expiration_date'], \
+                                 card['owner'], card['credit_network'])
+end
 
-describe 'Test hashing requirements' do
-  describe 'Test regular hashing' do
-    describe 'Check hashes are consistently produced' do
-      # TODO: Check that each card produces the same hash if hashed repeatedly
+card_details.each_with_index do |card, i|
+  describe 'Test hashing requirements' do
+    describe 'Test regular hashing' do
+      describe 'Check hashes are consistently produced' do
+        # TODO: Check that each card produces the same hash if hashed repeatedly
+        it 'should check for hash consitency' do
+          hash1 = card.hash
+          hash2 = card.hash
+          hash1.wont_equal card.to_s
+          hash1.wont_be_nil
+          hash1.must_equal hash2
+        end
+      end
+
+      describe 'Check for unique hashes' do
+        # TODO: Check that each card produces a different hash than other cards
+        it 'should check for uniquness amongst cards' do
+          hash = card.hash
+          remainder = card_details[i + 1..card_details.length]
+          remainder.each do |c|
+            hash.wont_equal c.hash
+          end
+        end
+      end
     end
 
-    describe 'Check for unique hashes' do
-      # TODO: Check that each card produces a different hash than other cards
-    end
-  end
+    describe 'Test cryptographic hashing' do
+      describe 'Check hashes are consistently produced' do
+        # TODO: Check that each card produces the same hash if hashed repeatedly
+        it 'should check for hash consitency' do
+          hash1 = card.hash_secure
+          hash2 = card.hash_secure
+          hash1.wont_equal card.to_s
+          hash1.wont_be_nil
+          hash1.must_equal hash2
+        end
+      end
 
-  describe 'Test cryptographic hashing' do
-    describe 'Check hashes are consistently produced' do
-      # TODO: Check that each card produces the same hash if hashed repeatedly
-    end
+      describe 'Check for unique hashes' do
+        # TODO: Check that each card produces a different hash than other cards
+        it 'should check for uniquness amongst cards' do
+          hash = card.hash_secure
+          remainder = card_details[i + 1..card_details.length]
+          remainder.each do |c|
+            hash.wont_equal c.hash_secure
+          end
+        end
+      end
 
-    describe 'Check for unique hashes' do
-      # TODO: Check that each card produces a different hash than other cards
-    end
-
-    describe 'Check regular hash not same as cryptographic hash' do
-      # TODO: Check that each card's hash is different from its hash_secure
+      describe 'Check regular hash not same as cryptographic hash' do
+        # TODO: Check that each card's hash is different from its hash_secure
+        it 'should check for uniquness amongst cards' do
+          hash1 = card.hash
+          hash2 = card.hash_secure
+          hash1.wont_equal hash2
+        end
+      end
     end
   end
 end
