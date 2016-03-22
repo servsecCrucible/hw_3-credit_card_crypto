@@ -1,6 +1,7 @@
 require_relative '../credit_card'
 require_relative '../substitution_cipher'
 require_relative '../double_trans_cipher'
+require_relative '../aes_cipher'
 require 'minitest/autorun'
 require 'yaml'
 
@@ -17,7 +18,8 @@ cards.each do |key, card|
     ciphers = [
       ['Caesar cipher', SubstitutionCipher::Caesar],
       ['Permutation cipher', SubstitutionCipher::Permutation],
-      ['Double transposition cipher', DoubleTranspositionCipher]
+      ['Double transposition cipher', DoubleTranspositionCipher],
+      ['AesCipher', AesCipher]
     ]
 
     ciphers.each do |_name, method|
