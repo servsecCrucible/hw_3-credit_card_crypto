@@ -9,7 +9,8 @@ cards = YAML.load_file 'spec/test_cypher.yml'
 cards.each do |key, card|
   describe 'Test card info encryption' do
     before do
-      @cc = CreditCard.new(card['number'], card['date'], card['name'], card['type'])
+      @cc = CreditCard.new(card['number'], card['expiration_date'], \
+                           card['owner'], card['credit_network'])
       @key = key.to_i
     end
 
