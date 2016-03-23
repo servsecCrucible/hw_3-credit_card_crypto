@@ -1,8 +1,10 @@
+## AesCipher
 require 'openssl'
 require 'base64'
 require 'json'
 require 'digest/sha1'
 
+## AesCipher
 module AesCipher
   def self.encrypt(document, key)
     # TODO: Return JSON string of array: [iv, ciphertext]
@@ -13,9 +15,9 @@ module AesCipher
     cipher = OpenSSL::Cipher::AES.new(256, :CBC)
     cipher.encrypt
     cipher.key = Digest::SHA1.hexdigest(key.to_s)
-	iv = cipher.random_iv
-	encrypted = cipher.update(document.to_s) + cipher.final
-    [iv, encrypted]	
+    iv = cipher.random_iv
+    encrypted = cipher.update(document.to_s) + cipher.final
+    [iv, encrypted]
   end
 
   def self.decrypt(aes_crypt, key)
@@ -24,7 +26,6 @@ module AesCipher
     decipher.decrypt
     decipher.key = Digest::SHA1.hexdigest(key.to_s)
     decipher.iv = aes_crypt[0]
-    original = decipher.update(aes_crypt[1].to_s) + decipher.final
- 
+    decipher.update(aes_crypt[1].to_s) + decipher.final
   end
 end
