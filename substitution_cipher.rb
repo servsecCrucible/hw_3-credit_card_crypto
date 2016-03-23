@@ -1,4 +1,5 @@
 module SubstitutionCipher
+  ## Substitution Cipher
   module Caesar
     # Encrypts document using key
     # Arguments:
@@ -7,7 +8,7 @@ module SubstitutionCipher
     # Returns: String
     def self.encrypt(document, key)
       # TODO: encrypt string using caesar cipher
-      document.to_s.split("").map(&:ord).map {|i| i + key}.join(",")
+      document.to_s.split('').map(&:ord).map { |i| i + key }.join(',')
     end
 
     # Decrypts String document using integer key
@@ -17,12 +18,13 @@ module SubstitutionCipher
     # Returns: String
     def self.decrypt(document, key)
       # TODO: decrypt string using caesar cipher
-      document.split(",").map(&:to_i).map  { |i| i - key}.map(&:chr).join("")
+      document.split(',').map(&:to_i).map { |i| i - key }.map(&:chr).join('')
     end
   end
 
+  ## Permutation Cipher
   module Permutation
-    # Encrypts document using key
+    ## Encrypts document using key
     # Arguments:
     #   document: String
     #   key: Fixnum (integer)
@@ -30,7 +32,7 @@ module SubstitutionCipher
     def self.encrypt(document, key)
       # TODO: encrypt string using a permutation cipher
       perm_table = (0..127).to_a.shuffle(random: Random.new(key))
-      document.to_s.chars.map{ |c| perm_table[c.ord].chr }.join
+      document.to_s.chars.map { |c| perm_table[c.ord].chr }.join
     end
 
     # Decrypts String document using integer key
