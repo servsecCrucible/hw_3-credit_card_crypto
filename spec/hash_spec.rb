@@ -16,11 +16,9 @@ card_details.each_with_index do |card, i|
       describe 'Check hashes are consistently produced' do
         # TODO: Check that each card produces the same hash if hashed repeatedly
         it 'should check for hash consitency' do
-          hash1 = card.hash
-          hash2 = card.hash
-          hash1.wont_equal card.to_s
-          hash1.wont_be_nil
-          hash1.must_equal hash2
+          card.hash.wont_equal card.to_s
+          card.hash.wont_be_nil
+          card.hash.must_equal card.hash
         end
       end
 
@@ -40,11 +38,9 @@ card_details.each_with_index do |card, i|
       describe 'Check hashes are consistently produced' do
         # TODO: Check that each card produces the same hash if hashed repeatedly
         it 'should check for hash consitency' do
-          hash1 = card.hash_secure
-          hash2 = card.hash_secure
-          hash1.wont_equal card.to_s
-          hash1.wont_be_nil
-          hash1.must_equal hash2
+          card.hash.wont_equal card.to_s
+          card.hash.wont_be_nil
+          card.hash.must_equal card.hash
         end
       end
 
@@ -62,9 +58,7 @@ card_details.each_with_index do |card, i|
       describe 'Check regular hash not same as cryptographic hash' do
         # TODO: Check that each card's hash is different from its hash_secure
         it 'should check for uniquness amongst cards' do
-          hash1 = card.hash
-          hash2 = card.hash_secure
-          hash1.wont_equal hash2
+          card.hash.wont_equal card.hash_secure
         end
       end
     end
